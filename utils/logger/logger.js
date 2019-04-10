@@ -19,6 +19,7 @@ const {
     level: process.env.LOG_LEVEL || 'info',
     format: combine(splat(), lbl, timestamp(), fancyFormat),
     exitOnError: false,
+    stderrLevels: ['error', 'warn'],
     transports: [
       new transports.Console(),
     ],
