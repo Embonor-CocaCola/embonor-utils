@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 const chai = require('chai');
 
 const authACL = require('../utils/jwt-acl-middleware');
+
 const config = {
   serviceName: 'service-name',
-  secret: "secret",
-}
+  secret: 'secret',
+};
 
 const { expect } = chai;
 
