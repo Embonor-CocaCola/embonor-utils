@@ -39,7 +39,6 @@ function checkAction(req, options, ACL) {
   return { approved, resources };
 }
 
-
 const generalOptions = {};
 module.exports = (options) => {
   let currentOptions = generalOptions;
@@ -59,9 +58,10 @@ module.exports = (options) => {
       } catch (e) {
         req.user = {};
       }
-      req.ACL = { resources: {} };
+      req.ACL = { resources: [''] };
       return next();
     }
+
     return auth({ secret: currentOptions.secret })(req, res, (error) => {
       if (error) return next(error);
       const { approved, resources } = checkAction(req, currentOptions, req.user.ACL);
