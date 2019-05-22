@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 const chai = require('chai');
 
 const authACL = require('../utils/jwt-acl-middleware');
+
 const config = {
   serviceName: 'service-name',
-  secret: "secret",
-}
+  secret: 'secret',
+};
 
 const { expect } = chai;
 
@@ -18,27 +19,15 @@ describe('jwt-acl-middleware', () => {
   const ACLExample = [
     {
       actions: [`* /${config.serviceName}/*`],
-      resources: [{
-        type: 'all',
-      }, {
-        type: 'all2',
-      }],
+      resources: ['cl:westeros', 'bo:essos'],
     },
     {
       actions: [`* /${config.serviceName}/resource`],
-      resources: [
-        {
-          type: 'resource',
-        },
-      ],
+      resources: ['cl:'],
     },
     {
       actions: [`get /${config.serviceName}/resource`],
-      resources: [
-        {
-          type: 'get-resource',
-        },
-      ],
+      resources: [''],
     },
   ];
   const jwtBearer = `Bearer ${jwt.sign({ ACL: ACLExample }, config.secret)}`;
@@ -68,7 +57,7 @@ describe('jwt-acl-middleware', () => {
       if (err) done(err);
       expect(req.ACL).not.to.be.undefined;
       expect(req.ACL.resources).to.be.an('array');
-      expect(req.ACL.resources.every(r => ['all', 'all2', 'resource', 'get-resource'].includes(r.type))).to.be.true;
+      expect(req.ACL.resources.every(r => typeof r === 'string')).to.be.true;
       done();
     });
   });
@@ -82,8 +71,8 @@ describe('jwt-acl-middleware', () => {
       if (err) done(err);
       expect(req.ACL).not.to.be.undefined;
       expect(req.ACL.resources).to.be.an('array');
-      expect(req.ACL.resources.every(r => ['all', 'all2', 'resource'].includes(r.type))).to.be.true;
-      expect(req.ACL.resources.every(r => !['get-resource'].includes(r.type))).to.be.true;
+      expect(req.ACL.resources.every(r => typeof r === 'string')).to.be.true;
+      expect(req.ACL.resources.every(r => ![''].includes(r))).to.be.true;
       done();
     });
   });

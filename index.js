@@ -5,5 +5,5 @@ const authACL = require('./utils/jwt-acl-middleware');
 module.exports = {
   logger,
   BaseError,
-  authACL
+  authACL,
 };

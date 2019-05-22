@@ -26,7 +26,7 @@ module.exports = class BaseError extends Error {
     globalPrintStack = value;
   }
 
-  setPrintStack(value){
+  setPrintStack(value) {
     this.printStack = value;
   }
 
@@ -39,9 +39,13 @@ module.exports = class BaseError extends Error {
       code: this.code,
       status: this.status,
       description: this.description,
+    };
+
+    if (this.metadata) {
+      jsonError.metadata = this.metadata;
     }
-    if(this.metadata) { jsonError.metadata = this.metadata; }
-    if((this.printStack === undefined && globalPrintStack) || (this.printStack !==undefined && this.printStack)) {
+
+    if ((this.printStack === undefined && globalPrintStack) || (this.printStack !== undefined && this.printStack)) {
       jsonError.stack = this.stack;
     }
     return jsonError;

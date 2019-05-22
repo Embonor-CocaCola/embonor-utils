@@ -39,7 +39,6 @@ function checkAction(req, options, ACL) {
   return { approved, resources };
 }
 
-
 const generalOptions = {};
 module.exports = (options) => {
   let currentOptions = generalOptions;
@@ -52,16 +51,17 @@ module.exports = (options) => {
     }
   }
   return (req, res, next) => {
-    if(currentOptions.allowTrustedSources && String(req.headers['untrusted-source']).toLowerCase() !== 'true'){
+    if (currentOptions.allowTrustedSources && String(req.headers['untrusted-source']).toLowerCase() !== 'true') {
       try {
-      const token = req.headers["authorization"].split(' ').pop(); 
-      req.user = jwt.decode(token);
+        const token = req.headers.authorization.split(' ').pop();
+        req.user = jwt.decode(token);
       } catch (e) {
         req.user = {};
       }
-      req.ACL = { resources: {} };
+      req.ACL = { resources: [''] };
       return next();
     }
+
     return auth({ secret: currentOptions.secret })(req, res, (error) => {
       if (error) return next(error);
       const { approved, resources } = checkAction(req, currentOptions, req.user.ACL);
@@ -75,5 +75,5 @@ module.exports = (options) => {
       req.ACL = { resources };
       return next();
     });
-  }
+  };
 };
