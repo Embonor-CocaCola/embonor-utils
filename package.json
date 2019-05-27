@@ -1,6 +1,7 @@
 {
-  "name": "embonor-utils",
+  "name": "@embonor/utils",
   "version": "1.0.8",
+  "private": false,
   "description": "Common services utilities",
   "main": "index.js",
   "scripts": {
@@ -30,5 +31,8 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "mocha": "^5.2.0"
+  },
+  "peerDependencies": {
+    "sequelize": "*"
   }
 }
